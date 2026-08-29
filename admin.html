@@ -1,47 +1,1211 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
+
 <title>Mahakal Tour & Travel — Admin</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
+
+
 <body>
-<header><div class="brand">🕉️ Mahakal Tour & Travel — Admin</div><a href="index.html">View Website</a></header>
-<main class="admin">
-<h1>Manage Trips</h1>
-<p class="notice">This free starter version stores trips in this browser using localStorage. It does not send data to a server. For a secure multi-device admin panel, connect the site to a database under your own account.</p>
-<form id="tripForm" class="form">
-<input type="hidden" id="editId">
-<input id="from" placeholder="Pickup location" required>
-<input id="to" placeholder="Drop location" required>
-<input id="date" type="date" required>
-<input id="time" type="time" required>
-<input id="seats" type="number" min="1" placeholder="Available seats" required>
-<input id="fare" type="number" min="0" placeholder="Fare per seat (₹)">
-<button class="btn" type="submit">Save Trip</button>
-<button class="btn secondary" type="button" onclick="resetForm()">Clear</button>
-</form>
-<h2>Your Trips</h2>
-<div id="adminTrips"></div>
+
+
+<header>
+
+  <div class="brand">
+    🕉️ Mahakal Tour & Travel — Admin
+  </div>
+
+  <a href="index.html">
+    View Website
+  </a>
+
+</header>
+
+
+
+<!-- =========================
+     ADMIN LOGIN
+========================= -->
+
+<div id="loginBox" class="admin-login">
+
+  <div class="login-card">
+
+    <h1>🔐 Admin Login</h1>
+
+    <p>
+      Mahakal Tour & Travel
+    </p>
+
+
+    <input
+      id="adminUsername"
+      type="text"
+      placeholder="Username"
+      autocomplete="username"
+    >
+
+
+    <input
+      id="adminPassword"
+      type="password"
+      placeholder="Password"
+      autocomplete="current-password"
+    >
+
+
+    <button
+      class="btn"
+      onclick="loginAdmin()">
+
+      Login
+
+    </button>
+
+
+    <p
+      id="loginError"
+      class="login-error">
+    </p>
+
+  </div>
+
+</div>
+
+
+
+<!-- =========================
+     ADMIN PANEL
+========================= -->
+
+<main
+  id="adminPanel"
+  class="admin"
+  style="display:none;">
+
+
+  <div class="admin-top">
+
+    <div>
+
+      <h1>
+        Manage Trips & Bookings
+      </h1>
+
+      <p>
+        Mahakal Tour & Travel Admin Dashboard
+      </p>
+
+    </div>
+
+
+    <button
+      class="btn secondary"
+      onclick="logoutAdmin()">
+
+      Logout
+
+    </button>
+
+  </div>
+
+
+
+  <!-- =========================
+       STATISTICS
+  ========================= -->
+
+  <div class="admin-stats">
+
+
+    <div class="stat-card">
+
+      <span>🚌</span>
+
+      <b id="totalTrips">
+        0
+      </b>
+
+      <small>
+        Total Trips
+      </small>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span>💺</span>
+
+      <b id="totalSeats">
+        0
+      </b>
+
+      <small>
+        Available Seats
+      </small>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span>📋</span>
+
+      <b id="totalBookings">
+        0
+      </b>
+
+      <small>
+        Total Bookings
+      </small>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span>⏳</span>
+
+      <b id="pendingBookings">
+        0
+      </b>
+
+      <small>
+        Pending Bookings
+      </small>
+
+    </div>
+
+
+  </div>
+
+
+
+  <p class="notice">
+
+    Manage your trips and passenger bookings
+    from this dashboard.
+
+  </p>
+
+
+
+  <!-- =========================
+       ADD / EDIT TRIP
+  ========================= -->
+
+  <h2>
+    🚌 Add / Edit Trip
+  </h2>
+
+
+  <form
+    id="tripForm"
+    class="form">
+
+
+    <input
+      type="hidden"
+      id="editId"
+    >
+
+
+    <input
+      id="from"
+      placeholder="📍 Pickup location"
+      required
+    >
+
+
+    <input
+      id="to"
+      placeholder="📍 Drop location"
+      required
+    >
+
+
+    <input
+      id="date"
+      type="date"
+      required
+    >
+
+
+    <input
+      id="time"
+      type="time"
+      required
+    >
+
+
+    <input
+      id="seats"
+      type="number"
+      min="1"
+      placeholder="💺 Available seats"
+      required
+    >
+
+
+    <input
+      id="fare"
+      type="number"
+      min="0"
+      placeholder="💰 Fare per seat (₹)"
+    >
+
+
+    <button
+      class="btn"
+      type="submit">
+
+      💾 Save Trip
+
+    </button>
+
+
+    <button
+      class="btn secondary"
+      type="button"
+      onclick="resetForm()">
+
+      Clear
+
+    </button>
+
+
+  </form>
+
+
+
+  <!-- =========================
+       TRIPS
+  ========================= -->
+
+  <h2>
+    🚌 Your Trips
+  </h2>
+
+
+  <div id="adminTrips"></div>
+
+
+
+  <!-- =========================
+       PASSENGER BOOKINGS
+  ========================= -->
+
+  <h2 style="margin-top:50px;">
+
+    📋 Passenger Bookings
+
+  </h2>
+
+
+  <div id="adminBookings"></div>
+
+
 </main>
+
+
+
 <script>
-const KEY="mahakal_trips_v1";
-const getTrips=()=>JSON.parse(localStorage.getItem(KEY)||"[]");
-const saveTrips=t=>localStorage.setItem(KEY,JSON.stringify(t));
-function resetForm(){document.getElementById("tripForm").reset();document.getElementById("editId").value=""}
-function render(){
- const trips=getTrips(), box=document.getElementById("adminTrips");
- box.innerHTML=trips.length?trips.map(t=>`<div class="adminrow"><div><b>${t.from} → ${t.to}</b><br>${t.date} • ${t.time} • ${t.seats} seats${t.fare?` • ₹${t.fare}/seat`:""}</div><div><button onclick="editTrip('${t.id}')">Edit</button> <button onclick="delTrip('${t.id}')">Delete</button></div></div>`).join(""):"<p>No trips added yet.</p>";
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+
+const KEY =
+  "mahakal_trips_v1";
+
+
+const BOOKING_KEY =
+  "mahakal_bookings";
+
+
+const ADMIN_USERNAME =
+  "kiran_jadhav47";
+
+
+const ADMIN_PASSWORD =
+  "@papaji1982";
+
+
+const BUSINESS_WHATSAPP =
+  "919630783154";
+
+
+
+/* =========================
+   LOGIN
+========================= */
+
+
+function loginAdmin() {
+
+
+  const username =
+    document
+      .getElementById("adminUsername")
+      .value
+      .trim();
+
+
+  const password =
+    document
+      .getElementById("adminPassword")
+      .value;
+
+
+  const error =
+    document
+      .getElementById("loginError");
+
+
+  if (
+    username === ADMIN_USERNAME &&
+    password === ADMIN_PASSWORD
+  ) {
+
+
+    sessionStorage.setItem(
+      "mahakal_admin_login",
+      "true"
+    );
+
+
+    document
+      .getElementById("loginBox")
+      .style.display = "none";
+
+
+    document
+      .getElementById("adminPanel")
+      .style.display = "block";
+
+
+    render();
+
+
+    renderBookings();
+
+
+  } else {
+
+
+    error.textContent =
+      "❌ Incorrect username or password";
+
+
+  }
+
 }
-document.getElementById("tripForm").addEventListener("submit",e=>{
- e.preventDefault(); let trips=getTrips(), id=document.getElementById("editId").value||Date.now().toString();
- const obj={id,from:from.value.trim(),to:to.value.trim(),date:date.value,time:time.value,seats:Number(seats.value),fare:Number(fare.value||0)};
- const i=trips.findIndex(x=>x.id===id); if(i>=0) trips[i]=obj; else trips.push(obj); saveTrips(trips); resetForm(); render();
-});
-function editTrip(id){const t=getTrips().find(x=>x.id===id); editId.value=t.id;from.value=t.from;to.value=t.to;date.value=t.date;time.value=t.time;seats.value=t.seats;fare.value=t.fare||"";scrollTo(0,0)}
-function delTrip(id){if(confirm("Delete this trip?")){saveTrips(getTrips().filter(x=>x.id!==id));render()}}
-render();
+
+
+
+/* =========================
+   ENTER KEY LOGIN
+========================= */
+
+
+document.addEventListener(
+  "keydown",
+  function(e) {
+
+    if (
+      e.key === "Enter" &&
+      document
+        .getElementById("loginBox")
+        .style.display !== "none"
+    ) {
+
+      loginAdmin();
+
+    }
+
+  }
+);
+
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+
+function logoutAdmin() {
+
+
+  sessionStorage.removeItem(
+    "mahakal_admin_login"
+  );
+
+
+  location.reload();
+
+}
+
+
+
+/* =========================
+   CHECK LOGIN
+========================= */
+
+
+function checkLogin() {
+
+
+  const loggedIn =
+    sessionStorage.getItem(
+      "mahakal_admin_login"
+    );
+
+
+  if (loggedIn === "true") {
+
+
+    document
+      .getElementById("loginBox")
+      .style.display = "none";
+
+
+    document
+      .getElementById("adminPanel")
+      .style.display = "block";
+
+
+    render();
+
+
+    renderBookings();
+
+  }
+
+}
+
+
+
+/* =========================
+   TRIP DATA
+========================= */
+
+
+function getTrips() {
+
+
+  return JSON.parse(
+    localStorage.getItem(KEY) || "[]"
+  );
+
+
+}
+
+
+
+function saveTrips(trips) {
+
+
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(trips)
+  );
+
+
+}
+
+
+
+/* =========================
+   BOOKING DATA
+========================= */
+
+
+function getBookings() {
+
+
+  return JSON.parse(
+    localStorage.getItem(
+      BOOKING_KEY
+    ) || "[]"
+  );
+
+
+}
+
+
+
+function saveBookings(bookings) {
+
+
+  localStorage.setItem(
+    BOOKING_KEY,
+    JSON.stringify(bookings)
+  );
+
+
+}
+
+
+
+/* =========================
+   RESET FORM
+========================= */
+
+
+function resetForm() {
+
+
+  document
+    .getElementById("tripForm")
+    .reset();
+
+
+  document
+    .getElementById("editId")
+    .value = "";
+
+
+}
+
+
+
+/* =========================
+   SAVE TRIP
+========================= */
+
+
+document
+  .getElementById("tripForm")
+  .addEventListener(
+    "submit",
+    function(e) {
+
+
+      e.preventDefault();
+
+
+      let trips =
+        getTrips();
+
+
+      const id =
+        document
+          .getElementById("editId")
+          .value ||
+        Date.now().toString();
+
+
+      const obj = {
+
+
+        id: id,
+
+
+        from:
+          document
+            .getElementById("from")
+            .value
+            .trim(),
+
+
+        to:
+          document
+            .getElementById("to")
+            .value
+            .trim(),
+
+
+        date:
+          document
+            .getElementById("date")
+            .value,
+
+
+        time:
+          document
+            .getElementById("time")
+            .value,
+
+
+        seats:
+          Number(
+            document
+              .getElementById("seats")
+              .value
+          ),
+
+
+        fare:
+          Number(
+            document
+              .getElementById("fare")
+              .value || 0
+          )
+
+
+      };
+
+
+      const index =
+        trips.findIndex(
+          x => x.id === id
+        );
+
+
+      if (index >= 0) {
+
+        trips[index] = obj;
+
+      } else {
+
+        trips.push(obj);
+
+      }
+
+
+      saveTrips(trips);
+
+
+      resetForm();
+
+
+      render();
+
+
+    }
+  );
+
+
+
+/* =========================
+   RENDER TRIPS
+========================= */
+
+
+function render() {
+
+
+  const trips =
+    getTrips();
+
+
+  const box =
+    document
+      .getElementById(
+        "adminTrips"
+      );
+
+
+  document
+    .getElementById(
+      "totalTrips"
+    )
+    .textContent =
+    trips.length;
+
+
+  document
+    .getElementById(
+      "totalSeats"
+    )
+    .textContent =
+    trips.reduce(
+      (total, trip) =>
+        total +
+        Number(
+          trip.seats || 0
+        ),
+      0
+    );
+
+
+  box.innerHTML =
+    trips.length
+
+
+      ? trips.map(
+          t => `
+
+      <div class="adminrow">
+
+        <div>
+
+          <b>
+            📍 ${t.from} → ${t.to}
+          </b>
+
+          <br>
+
+          📅 ${t.date}
+
+          &nbsp; • &nbsp;
+
+          🕐 ${t.time}
+
+          <br>
+
+          💺 ${t.seats} seats
+
+          ${
+            t.fare
+              ? ` • 💰 ₹${t.fare}/seat`
+              : ""
+          }
+
+        </div>
+
+
+        <div>
+
+          <button
+            onclick="editTrip('${t.id}')">
+
+            ✏️ Edit
+
+          </button>
+
+
+          <button
+            onclick="delTrip('${t.id}')">
+
+            🗑️ Delete
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `
+        ).join("")
+
+
+      : "<p>No trips added yet.</p>";
+
+
+  renderBookings();
+
+}
+
+
+
+/* =========================
+   EDIT TRIP
+========================= */
+
+
+function editTrip(id) {
+
+
+  const t =
+    getTrips().find(
+      x => x.id === id
+    );
+
+
+  if (!t) return;
+
+
+  document
+    .getElementById("editId")
+    .value = t.id;
+
+
+  document
+    .getElementById("from")
+    .value = t.from;
+
+
+  document
+    .getElementById("to")
+    .value = t.to;
+
+
+  document
+    .getElementById("date")
+    .value = t.date;
+
+
+  document
+    .getElementById("time")
+    .value = t.time;
+
+
+  document
+    .getElementById("seats")
+    .value = t.seats;
+
+
+  document
+    .getElementById("fare")
+    .value =
+    t.fare || "";
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+
+}
+
+
+
+/* =========================
+   DELETE TRIP
+========================= */
+
+
+function delTrip(id) {
+
+
+  if (
+    confirm(
+      "Are you sure you want to delete this trip?"
+    )
+  ) {
+
+
+    saveTrips(
+      getTrips().filter(
+        x => x.id !== id
+      )
+    );
+
+
+    render();
+
+  }
+
+}
+
+
+
+/* =========================
+   RENDER BOOKINGS
+========================= */
+
+
+function renderBookings() {
+
+
+  const bookings =
+    getBookings();
+
+
+  const box =
+    document
+      .getElementById(
+        "adminBookings"
+      );
+
+
+  const total =
+    document
+      .getElementById(
+        "totalBookings"
+      );
+
+
+  const pending =
+    document
+      .getElementById(
+        "pendingBookings"
+      );
+
+
+  if (!box) return;
+
+
+  total.textContent =
+    bookings.length;
+
+
+  pending.textContent =
+    bookings.filter(
+      b =>
+        b.status === "Pending"
+    ).length;
+
+
+  box.innerHTML =
+    bookings.length
+
+
+      ? bookings
+          .slice()
+          .reverse()
+          .map(
+            b => `
+
+      <div class="adminrow">
+
+        <div>
+
+          <b>
+            👤 ${b.name}
+          </b>
+
+          <br>
+
+          📱 ${b.phone}
+
+          <br>
+
+          📍 ${b.from}
+          → ${b.to}
+
+          <br>
+
+          📅 ${b.date}
+
+          &nbsp; • &nbsp;
+
+          🕐 ${b.time}
+
+          <br>
+
+          💺 ${b.seats} seats
+
+          <br>
+
+          <b>
+            Status:
+            ${b.status}
+          </b>
+
+        </div>
+
+
+        <div>
+
+          ${
+            b.status === "Pending"
+
+              ? `
+
+                <button
+                  onclick="confirmBooking('${b.id}')">
+
+                  ✅ Confirm
+
+                </button>
+
+                <button
+                  onclick="cancelBooking('${b.id}')">
+
+                  ❌ Cancel
+
+                </button>
+
+              `
+
+              : ""
+
+          }
+
+
+          <button
+            onclick="deleteBooking('${b.id}')">
+
+            🗑️ Delete
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `
+          )
+          .join("")
+
+
+      : "<p>No passenger bookings yet.</p>";
+
+}
+
+
+
+/* =========================
+   CONFIRM BOOKING
+========================= */
+
+
+function confirmBooking(id) {
+
+
+  const bookings =
+    getBookings();
+
+
+  const index =
+    bookings.findIndex(
+      b => b.id === id
+    );
+
+
+  if (index === -1)
+    return;
+
+
+  const b =
+    bookings[index];
+
+
+  b.status =
+    "Confirmed";
+
+
+  saveBookings(
+    bookings
+  );
+
+
+  renderBookings();
+
+
+  sendConfirmationWhatsApp(b);
+
+}
+
+
+
+/* =========================
+   CANCEL BOOKING
+========================= */
+
+
+function cancelBooking(id) {
+
+
+  const bookings =
+    getBookings();
+
+
+  const index =
+    bookings.findIndex(
+      b => b.id === id
+    );
+
+
+  if (index === -1)
+    return;
+
+
+  bookings[index].status =
+    "Cancelled";
+
+
+  saveBookings(
+    bookings
+  );
+
+
+  renderBookings();
+
+
+}
+
+
+
+/* =========================
+   DELETE BOOKING
+========================= */
+
+
+function deleteBooking(id) {
+
+
+  if (
+    !confirm(
+      "Delete this booking?"
+    )
+  )
+    return;
+
+
+  saveBookings(
+    getBookings().filter(
+      b => b.id !== id
+    )
+  );
+
+
+  renderBookings();
+
+}
+
+
+
+/* =========================
+   CONFIRMATION WHATSAPP
+========================= */
+
+
+function sendConfirmationWhatsApp(b) {
+
+
+  const message =
+`🎉 Booking Confirmed!
+
+Hello ${b.name},
+
+Your booking with Mahakal Tour & Travel has been confirmed.
+
+📍 Pickup: ${b.from}
+📍 Drop: ${b.to}
+📅 Date: ${b.date}
+🕐 Time: ${b.time}
+💺 Seats: ${b.seats}
+📱 Passenger Mobile: ${b.phone}
+
+🙏 Thank you for booking with Mahakal Tour & Travel.
+
+Thank you for choosing Mahakal Tour & Travel!`;
+
+
+  const url =
+    "https://wa.me/" +
+    b.phone +
+    "?text=" +
+    encodeURIComponent(
+      message
+    );
+
+
+  window.open(
+    url,
+    "_blank"
+  );
+
+}
+
+
+
+/* =========================
+   START
+========================= */
+
+
+checkLogin();
+
 </script>
+
+
 </body>
+
 </html>
