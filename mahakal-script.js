@@ -7,7 +7,7 @@ const sample = [
     to: "Ujjain",
     date: "2026-09-05",
     time: "05:00",
-    seats: 3,
+    seats: 7,
     fare: 0
   }
 ];
@@ -23,22 +23,98 @@ function getTrips() {
   return x;
 }
 
-function waLink(t) {
-  const msg =
-    `Hello Mahakal Tour & Travel,%0A` +
-    `I want to book/enquire about this trip.%0A%0A` +
-    `Pickup: ${t.from}%0A` +
-    `Drop: ${t.to}%0A` +
-    `Date: ${t.date}%0A` +
-    `Time: ${t.time}%0A` +
-    `Available seats shown: ${t.seats}%0A%0A` +
-    `Name: %0A` +
-    `Passengers: `;
 
-  return `https://wa.me/919630783154?text=${msg}`;
+/* OPEN BOOKING FORM */
+
+function openBooking(trip) {
+  const modal = document.getElementById("bookingModal");
+
+  const from = document.getElementById("bookingFrom");
+  const to = document.getElementById("bookingTo");
+  const date = document.getElementById("bookingDate");
+  const time = document.getElementById("bookingTime");
+  const seats = document.getElementById("bookingSeats");
+
+  from.innerHTML = `
+    <option value="${trip.from}">
+      ${trip.from}
+    </option>
+  `;
+
+  to.innerHTML = `
+    <option value="${trip.to}">
+      ${trip.to}
+    </option>
+  `;
+
+  date.value = trip.date;
+  time.value = trip.time;
+
+  seats.innerHTML = `<option value="">Select Seats</option>`;
+
+  const maxSeats = Math.min(Number(trip.seats), 7);
+
+  for (let i = 1; i <= maxSeats; i++) {
+    seats.innerHTML += `
+      <option value="${i}">
+        ${i} ${i === 1 ? "Seat" : "Seats"}
+      </option>
+    `;
+  }
+
+  modal.style.display = "flex";
 }
 
+
+/* CLOSE BOOKING FORM */
+
+function closeBooking() {
+  document.getElementById("bookingModal").style.display = "none";
+}
+
+
+/* SEND BOOKING TO WHATSAPP */
+
+function sendBooking() {
+
+  const name = document.getElementById("bookingName").value.trim();
+  const from = document.getElementById("bookingFrom").value;
+  const to = document.getElementById("bookingTo").value;
+  const date = document.getElementById("bookingDate").value;
+  const time = document.getElementById("bookingTime").value;
+  const seats = document.getElementById("bookingSeats").value;
+
+  if (!name || !from || !to || !date || !time || !seats) {
+    alert("Please fill all booking details.");
+    return;
+  }
+
+  const message =
+`Hello Mahakal Tour & Travel,
+
+I want to book/enquire about a trip.
+
+Name: ${name}
+Pickup: ${from}
+Drop: ${to}
+Date: ${date}
+Time: ${time}
+Passengers / Seats: ${seats}
+
+Please confirm availability and booking.`;
+
+  const url =
+    "https://wa.me/919630783154?text=" +
+    encodeURIComponent(message);
+
+  window.open(url, "_blank");
+}
+
+
+/* DISPLAY TRIPS */
+
 function renderTrips(list = getTrips()) {
+
   const box = document.getElementById("tripList");
   const count = document.getElementById("tripCount");
 
@@ -48,23 +124,52 @@ function renderTrips(list = getTrips()) {
     `${list.length} trip${list.length === 1 ? "" : "s"}`;
 
   box.innerHTML = list.length
+
     ? list.map(t => `
+
       <article class="card">
-        <div class="route">📍 ${t.from} → ${t.to}</div>
-        <div class="meta">📅 ${t.date} &nbsp; 🕐 ${t.time}</div>
-        <div class="seats">
-          💺 ${t.seats} seat${t.seats == 1 ? "" : "s"} available
+
+        <div class="route">
+          📍 ${t.from} → ${t.to}
         </div>
-        ${t.fare ? `<div class="meta">💰 ₹${t.fare} / seat</div>` : ""}
-        <a class="btn" href="${waLink(t)}" target="_blank">
+
+        <div class="meta">
+          📅 ${t.date}
+          &nbsp;
+          🕐 ${t.time}
+        </div>
+
+        <div class="seats">
+          💺 ${t.seats} seats available
+        </div>
+
+        ${
+          t.fare
+            ? `<div class="meta">
+                💰 ₹${t.fare} / seat
+              </div>`
+            : ""
+        }
+
+        <button
+          class="btn"
+          onclick='openBooking(${JSON.stringify(t)})'
+        >
           💬 Enquire / Book
-        </a>
+        </button>
+
       </article>
+
     `).join("")
+
     : "<p>No matching trips found. Try another route.</p>";
 }
 
+
+/* SEARCH */
+
 function filterTrips() {
+
   const fromEl = document.getElementById("fromSearch");
   const toEl = document.getElementById("toSearch");
 
@@ -80,5 +185,19 @@ function filterTrips() {
     )
   );
 }
+
+
+/* CLOSE FORM WHEN CLICKING OUTSIDE */
+
+window.onclick = function(event) {
+
+  const modal = document.getElementById("bookingModal");
+
+  if (event.target === modal) {
+    closeBooking();
+  }
+
+};
+
 
 renderTrips();
