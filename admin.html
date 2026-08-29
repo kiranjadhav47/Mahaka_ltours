@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mahakal Tour & Travel — Admin</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="brand">🕉️ Mahakal Tour & Travel — Admin</div><a href="index.html">View Website</a></header>
+<main class="admin">
+<h1>Manage Trips</h1>
+<p class="notice">This free starter version stores trips in this browser using localStorage. It does not send data to a server. For a secure multi-device admin panel, connect the site to a database under your own account.</p>
+<form id="tripForm" class="form">
+<input type="hidden" id="editId">
+<input id="from" placeholder="Pickup location" required>
+<input id="to" placeholder="Drop location" required>
+<input id="date" type="date" required>
+<input id="time" type="time" required>
+<input id="seats" type="number" min="1" placeholder="Available seats" required>
+<input id="fare" type="number" min="0" placeholder="Fare per seat (₹)">
+<button class="btn" type="submit">Save Trip</button>
+<button class="btn secondary" type="button" onclick="resetForm()">Clear</button>
+</form>
+<h2>Your Trips</h2>
+<div id="adminTrips"></div>
+</main>
+<script>
+const KEY="mahakal_trips_v1";
+const getTrips=()=>JSON.parse(localStorage.getItem(KEY)||"[]");
+const saveTrips=t=>localStorage.setItem(KEY,JSON.stringify(t));
+function resetForm(){document.getElementById("tripForm").reset();document.getElementById("editId").value=""}
+function render(){
+ const trips=getTrips(), box=document.getElementById("adminTrips");
+ box.innerHTML=trips.length?trips.map(t=>`<div class="adminrow"><div><b>${t.from} → ${t.to}</b><br>${t.date} • ${t.time} • ${t.seats} seats${t.fare?` • ₹${t.fare}/seat`:""}</div><div><button onclick="editTrip('${t.id}')">Edit</button> <button onclick="delTrip('${t.id}')">Delete</button></div></div>`).join(""):"<p>No trips added yet.</p>";
+}
+document.getElementById("tripForm").addEventListener("submit",e=>{
+ e.preventDefault(); let trips=getTrips(), id=document.getElementById("editId").value||Date.now().toString();
+ const obj={id,from:from.value.trim(),to:to.value.trim(),date:date.value,time:time.value,seats:Number(seats.value),fare:Number(fare.value||0)};
+ const i=trips.findIndex(x=>x.id===id); if(i>=0) trips[i]=obj; else trips.push(obj); saveTrips(trips); resetForm(); render();
+});
+function editTrip(id){const t=getTrips().find(x=>x.id===id); editId.value=t.id;from.value=t.from;to.value=t.to;date.value=t.date;time.value=t.time;seats.value=t.seats;fare.value=t.fare||"";scrollTo(0,0)}
+function delTrip(id){if(confirm("Delete this trip?")){saveTrips(getTrips().filter(x=>x.id!==id));render()}}
+render();
+</script>
+</body>
+</html>
