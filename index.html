@@ -6,10 +6,14 @@
 <title>Mahakal Tour & Travel</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
 <header>
   <div class="brand">🕉️ Mahakal Tour & Travel</div>
-  <a class="wa small" href="https://wa.me/919630783154" target="_blank">WhatsApp</a>
+  <a class="wa small" href="https://wa.me/919630783154" target="_blank">
+    WhatsApp
+  </a>
 </header>
 
 <section class="hero">
@@ -23,6 +27,7 @@
 
 <section class="search">
   <h2>Find Your Journey</h2>
+
   <div class="grid">
     <input id="fromSearch" placeholder="Pickup location">
     <input id="toSearch" placeholder="Drop location">
@@ -31,29 +36,109 @@
 </section>
 
 <section id="trips" class="section">
+
   <div class="section-head">
     <h2>Available Trips</h2>
     <span id="tripCount"></span>
   </div>
+
   <div id="tripList" class="cards"></div>
+
 </section>
 
-<section class="how">
-  <h2>How it works</h2>
-  <div class="steps">
-    <div><b>1</b><h3>Choose Trip</h3><p>Select your Pickup → Drop route.</p></div>
-    <div><b>2</b><h3>Check Seats</h3><p>See date, time and available seats.</p></div>
-    <div><b>3</b><h3>Book on WhatsApp</h3><p>Send your travel details directly.</p></div>
+<!-- BOOKING FORM -->
+
+<div id="bookingModal" class="modal">
+
+  <div class="booking-box">
+
+    <button class="close" onclick="closeBooking()">×</button>
+
+    <h2>🚌 Book Your Trip</h2>
+    <p class="booking-subtitle">Enter your travel details</p>
+
+    <label>👤 Your Name</label>
+    <input id="bookingName" type="text" placeholder="Enter your name">
+
+    <label>📍 Pickup Point</label>
+    <select id="bookingFrom">
+      <option value="">Select Pickup Point</option>
+    </select>
+
+    <label>📍 Drop Point</label>
+    <select id="bookingTo">
+      <option value="">Select Drop Point</option>
+    </select>
+
+    <label>📅 Travel Date</label>
+    <input id="bookingDate" type="date">
+
+    <label>🕐 Travel Time</label>
+    <input id="bookingTime" type="time">
+
+    <label>💺 Number of Seats</label>
+    <select id="bookingSeats">
+      <option value="">Select Seats</option>
+      <option value="1">1 Seat</option>
+      <option value="2">2 Seats</option>
+      <option value="3">3 Seats</option>
+      <option value="4">4 Seats</option>
+      <option value="5">5 Seats</option>
+      <option value="6">6 Seats</option>
+      <option value="7">7 Seats</option>
+    </select>
+
+    <button class="btn booking-btn" onclick="sendBooking()">
+      💬 Send Enquiry on WhatsApp
+    </button>
+
   </div>
+
+</div>
+
+<section class="how">
+
+  <h2>How it works</h2>
+
+  <div class="steps">
+
+    <div>
+      <b>1</b>
+      <h3>Choose Trip</h3>
+      <p>Select your Pickup → Drop route.</p>
+    </div>
+
+    <div>
+      <b>2</b>
+      <h3>Enter Details</h3>
+      <p>Select date, time and number of seats.</p>
+    </div>
+
+    <div>
+      <b>3</b>
+      <h3>Send Enquiry</h3>
+      <p>Send your booking details directly on WhatsApp.</p>
+    </div>
+
+  </div>
+
 </section>
 
 <footer>
+
   <h2>Mahakal Tour & Travel</h2>
+
   <p>Pickup & Drop • Travel Services</p>
-  <a class="wa" href="https://wa.me/919630783154" target="_blank">💬 Contact on WhatsApp</a>
+
+  <a class="wa" href="https://wa.me/919630783154" target="_blank">
+    💬 Contact on WhatsApp
+  </a>
+
   <p class="copy">© 2026 Mahakal Tour & Travel</p>
+
 </footer>
 
 <script src="mahakal-script.js"></script>
+
 </body>
 </html>
