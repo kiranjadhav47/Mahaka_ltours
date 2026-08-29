@@ -11,90 +11,212 @@
 
 <header>
   <div class="brand">🕉️ Mahakal Tour & Travel</div>
-  <a class="wa small" href="https://wa.me/919630783154" target="_blank">
+
+  <a class="wa small"
+     href="https://wa.me/919630783154"
+     target="_blank">
     WhatsApp
   </a>
 </header>
 
+
 <section class="hero">
   <div>
+
     <p class="tag">TRAVEL • PICKUP • DROP</p>
-    <h1>Your Journey,<br><span>Our Responsibility.</span></h1>
-    <p>Find available trips, check seats and contact Mahakal Tour & Travel directly on WhatsApp.</p>
-    <a class="btn" href="#trips">View Available Trips</a>
+
+    <h1>
+      Your Journey,<br>
+      <span>Our Responsibility.</span>
+    </h1>
+
+    <p>
+      Find available trips, check seats and contact
+      Mahakal Tour & Travel directly on WhatsApp.
+    </p>
+
+    <a class="btn" href="#trips">
+      View Available Trips
+    </a>
+
   </div>
 </section>
 
+
 <section class="search">
+
   <h2>Find Your Journey</h2>
 
   <div class="grid">
-    <input id="fromSearch" placeholder="Pickup location">
-    <input id="toSearch" placeholder="Drop location">
-    <button class="btn" onclick="filterTrips()">Search</button>
+
+    <input
+      id="fromSearch"
+      placeholder="Pickup location"
+    >
+
+    <input
+      id="toSearch"
+      placeholder="Drop location"
+    >
+
+    <button
+      class="btn"
+      onclick="filterTrips()">
+      Search
+    </button>
+
   </div>
+
 </section>
+
 
 <section id="trips" class="section">
 
   <div class="section-head">
+
     <h2>Available Trips</h2>
+
     <span id="tripCount"></span>
+
   </div>
 
   <div id="tripList" class="cards"></div>
 
 </section>
 
+
+<!-- ========================= -->
 <!-- BOOKING FORM -->
+<!-- ========================= -->
 
 <div id="bookingModal" class="modal">
 
   <div class="booking-box">
 
-    <button class="close" onclick="closeBooking()">×</button>
+    <button
+      class="close"
+      onclick="closeBooking()">
+      ×
+    </button>
 
     <h2>🚌 Book Your Trip</h2>
-    <p class="booking-subtitle">Enter your travel details</p>
 
-    <label>👤 Your Name</label>
-    <input id="bookingName" type="text" placeholder="Enter your name">
+    <p class="booking-subtitle">
+      Enter your travel details
+    </p>
 
-    <label>📍 Pickup Point</label>
+
+    <!-- NAME -->
+
+    <label>
+      👤 Passenger Name
+    </label>
+
+    <input
+      id="bookingName"
+      type="text"
+      placeholder="Enter your name"
+    >
+
+
+    <!-- MOBILE -->
+
+    <label>
+      📱 Passenger Mobile Number
+    </label>
+
+    <input
+      id="bookingPhone"
+      type="tel"
+      inputmode="numeric"
+      maxlength="10"
+      placeholder="Enter 10 digit mobile number"
+    >
+
+
+    <!-- PICKUP -->
+
+    <label>
+      📍 Pickup Point
+    </label>
+
     <select id="bookingFrom">
-      <option value="">Select Pickup Point</option>
+
+      <option value="">
+        Select Pickup Point
+      </option>
+
     </select>
 
-    <label>📍 Drop Point</label>
+
+    <!-- DROP -->
+
+    <label>
+      📍 Drop Point
+    </label>
+
     <select id="bookingTo">
-      <option value="">Select Drop Point</option>
+
+      <option value="">
+        Select Drop Point
+      </option>
+
     </select>
 
-    <label>📅 Travel Date</label>
-    <input id="bookingDate" type="date">
 
-    <label>🕐 Travel Time</label>
-    <input id="bookingTime" type="time">
+    <!-- DATE -->
 
-    <label>💺 Number of Seats</label>
+    <label>
+      📅 Travel Date
+    </label>
+
+    <input
+      id="bookingDate"
+      type="date"
+    >
+
+
+    <!-- TIME -->
+
+    <label>
+      🕐 Travel Time
+    </label>
+
+    <input
+      id="bookingTime"
+      type="time"
+    >
+
+
+    <!-- SEATS -->
+
+    <label>
+      💺 Number of Seats
+    </label>
+
     <select id="bookingSeats">
-      <option value="">Select Seats</option>
-      <option value="1">1 Seat</option>
-      <option value="2">2 Seats</option>
-      <option value="3">3 Seats</option>
-      <option value="4">4 Seats</option>
-      <option value="5">5 Seats</option>
-      <option value="6">6 Seats</option>
-      <option value="7">7 Seats</option>
+
+      <option value="">
+        Select Seats
+      </option>
+
     </select>
 
-    <button class="btn booking-btn" onclick="sendBooking()">
-      💬 Send Enquiry on WhatsApp
+
+    <!-- BOOK -->
+
+    <button
+      class="btn booking-btn"
+      onclick="sendBooking()">
+
+      💬 Send Booking Enquiry
+
     </button>
 
   </div>
 
 </div>
+
 
 <section class="how">
 
@@ -105,38 +227,59 @@
     <div>
       <b>1</b>
       <h3>Choose Trip</h3>
-      <p>Select your Pickup → Drop route.</p>
+      <p>
+        Select your Pickup → Drop route.
+      </p>
     </div>
+
 
     <div>
       <b>2</b>
       <h3>Enter Details</h3>
-      <p>Select date, time and number of seats.</p>
+      <p>
+        Select date, time, seats and passenger details.
+      </p>
     </div>
+
 
     <div>
       <b>3</b>
       <h3>Send Enquiry</h3>
-      <p>Send your booking details directly on WhatsApp.</p>
+      <p>
+        Send your booking details directly on WhatsApp.
+      </p>
     </div>
 
   </div>
 
 </section>
 
+
 <footer>
 
-  <h2>Mahakal Tour & Travel</h2>
+  <h2>
+    Mahakal Tour & Travel
+  </h2>
 
-  <p>Pickup & Drop • Travel Services</p>
+  <p>
+    Pickup & Drop • Travel Services
+  </p>
 
-  <a class="wa" href="https://wa.me/919630783154" target="_blank">
+  <a
+    class="wa"
+    href="https://wa.me/919630783154"
+    target="_blank">
+
     💬 Contact on WhatsApp
+
   </a>
 
-  <p class="copy">© 2026 Mahakal Tour & Travel</p>
+  <p class="copy">
+    © 2026 Mahakal Tour & Travel
+  </p>
 
 </footer>
+
 
 <script src="mahakal-script.js"></script>
 
