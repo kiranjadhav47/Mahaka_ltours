@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mahakal Tour & Travel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">🕉️ Mahakal Tour & Travel</div>
+  <a class="wa small" href="https://wa.me/919630783154" target="_blank">WhatsApp</a>
+</header>
+
+<section class="hero">
+  <div>
+    <p class="tag">TRAVEL • PICKUP • DROP</p>
+    <h1>Your Journey,<br><span>Our Responsibility.</span></h1>
+    <p>Find available trips, check seats and contact Mahakal Tour & Travel directly on WhatsApp.</p>
+    <a class="btn" href="#trips">View Available Trips</a>
+  </div>
+</section>
+
+<section class="search">
+  <h2>Find Your Journey</h2>
+  <div class="grid">
+    <input id="fromSearch" placeholder="Pickup location">
+    <input id="toSearch" placeholder="Drop location">
+    <button class="btn" onclick="filterTrips()">Search</button>
+  </div>
+</section>
+
+<section id="trips" class="section">
+  <div class="section-head">
+    <h2>Available Trips</h2>
+    <span id="tripCount"></span>
+  </div>
+  <div id="tripList" class="cards"></div>
+</section>
+
+<section class="how">
+  <h2>How it works</h2>
+  <div class="steps">
+    <div><b>1</b><h3>Choose Trip</h3><p>Select your Pickup → Drop route.</p></div>
+    <div><b>2</b><h3>Check Seats</h3><p>See date, time and available seats.</p></div>
+    <div><b>3</b><h3>Book on WhatsApp</h3><p>Send your travel details directly.</p></div>
+  </div>
+</section>
+
+<footer>
+  <h2>Mahakal Tour & Travel</h2>
+  <p>Pickup & Drop • Travel Services</p>
+  <a class="wa" href="https://wa.me/919630783154" target="_blank">💬 Contact on WhatsApp</a>
+  <p class="copy">© 2026 Mahakal Tour & Travel</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
